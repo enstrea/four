@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package api.book.v1;
+option go_package = "four/api/book/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.book.v1";
+
+import "google/protobuf/field_mask.proto";
+
+service Book {
+    rpc CreateBook (CreateBookRequest) returns (CreateBookReply);
+    rpc UpdateBook (UpdateBookRequest) returns (UpdateBookReply);
+    rpc DeleteBook (DeleteBookRequest) returns (DeleteBookReply);
+    rpc GetBook (GetBookRequest) returns (GetBookReply);
+    rpc ListBook (ListBookRequest) returns (ListBookReply);
+}
+
+message CreateBookRequest {
+    string ISBN = 1;
+    string Name = 2;
+    string Author = 3;
+}
+message CreateBookReply {}
+
+message UpdateBookRequest {
+    BookInfo Book = 1;
+    google.protobuf.FieldMask mask = 2;
+}
+message UpdateBookReply {}
+
+message DeleteBookRequest {
+    repeated string Ids = 1;
+}
+message DeleteBookReply {}
+
+message GetBookRequest {
+    string Id = 1;
+}
+message GetBookReply {
+    BookInfo Book = 1;
+}
+
+message ListBookRequest {
+    repeated string Ids = 1;
+}
+message ListBookReply {
+    repeated BookInfo Books = 1;
+}
+
+// -------------- 结构体 --------------
+message BookInfo {
+    string Id = 1;
+    string ISBN = 2;
+    string Name = 3;
+    string Author = 4;
+}

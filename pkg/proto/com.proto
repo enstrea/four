@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.proto;
+option go_package = "four/pkg/proto;com";
+option java_multiple_files = true;
+option java_package = "pkg.proto";
+
+import "google/protobuf/any.proto";
+
+message Status {
+    // 错误码，跟 grpc-status 一致，并且在HTTP中可映射成 http-status
+    int32 Code = 1;
+    // 错误原因，业务判定错误码
+    string Reason = 2;
+    // 用户可读信息，可作为用户提示内容
+    string Message = 3;
+    // 错误详细信息，可以附加自定义信息列表
+    repeated google.protobuf.Any details = 4;
+}

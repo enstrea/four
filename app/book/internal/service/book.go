@@ -22,7 +22,7 @@ type BookService struct {
 }
 
 func (s *BookService) CreateBook(ctx context.Context, req *v1.CreateBookRequest) (*v1.CreateBookReply, error) {
-	_, err := s.buc.Create(ctx, &biz.Book{
+	book, err := s.buc.Create(ctx, &biz.Book{
 		ISBN:   req.ISBN,
 		Name:   req.Name,
 		Author: req.Author,
@@ -31,7 +31,7 @@ func (s *BookService) CreateBook(ctx context.Context, req *v1.CreateBookRequest)
 		return nil, err
 	}
 
-	return &v1.CreateBookReply{}, nil
+	return &v1.CreateBookReply{Book: Book2DTO(book)}, nil
 }
 
 func (s *BookService) DeleteBook(ctx context.Context, req *v1.DeleteBookRequest) (*v1.DeleteBookReply, error) {
@@ -53,8 +53,26 @@ func (s *BookService) GetBook(ctx context.Context, req *v1.GetBookRequest) (*v1.
 }
 
 func (s *BookService) ListBook(ctx context.Context, req *v1.ListBookRequest) (*v1.ListBookReply, error) {
-	// TODO page size 校验
-	panic("implement me")
+	if req.PageNum <= 0 {
+		req.PageNum = 1
+	}
+	if req.PageSize <= 0 {
+		req.PageSize = 20
+	}
+
+	books, err := s.buc.List(ctx, req.PageNum, req.PageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	repBooks := make([]*v1.BookInfo, 0, len(books))
+	for _, book := range books {
+		repBooks = append(repBooks, Book2DTO(book))
+	}
+
+	return &v1.ListBookReply{
+		Books: repBooks,
+	}, nil
 }
 
 func (s *BookService) UpdateBook(ctx context.Context, req *v1.UpdateBookRequest) (*v1.UpdateBookReply, error) {

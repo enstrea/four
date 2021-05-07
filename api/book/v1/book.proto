@@ -20,7 +20,9 @@ message CreateBookRequest {
     string Name = 2;
     string Author = 3;
 }
-message CreateBookReply {}
+message CreateBookReply {
+    BookInfo Book = 1;
+}
 
 message UpdateBookRequest {
     BookInfo Book = 1;
@@ -41,7 +43,8 @@ message GetBookReply {
 }
 
 message ListBookRequest {
-    repeated string Ids = 1;
+    int64 PageNum = 1;
+    int64 PageSize = 2;
 }
 message ListBookReply {
     repeated BookInfo Books = 1;

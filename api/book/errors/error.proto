@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package api.book.errors;
+import "kratos/api/annotations.proto";
+
+// 多语言特定包名，用于源代码引用
+option go_package = "four/api/book/errors;errors";
+option java_multiple_files = true;
+option java_package = "book.errors";
+option objc_class_prefix = "APIBookErrors";
+
+enum Book {
+	option (kratos.api.errors) = true;
+
+	Unknown = 0;
+	CreateBookFail = 1;
+	UpdateBookFail = 2;
+	DeleteBookFail = 3;
+	GetBookFail = 4;
+	BookNotFound = 5;
+}

@@ -18,11 +18,7 @@ import (
 // Injectors from wire.go:
 
 func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
-	if err != nil {
-		return nil, nil, err
-	}
-	bookRepo := data.NewBookRepo(dataData, logger)
+	bookRepo := data.NewBookRepo2(logger)
 	bookUseCase := biz.NewBookUseCase(bookRepo, logger)
 	bookService := service.NewBookService(bookUseCase, logger)
 	httpServer := server.NewHTTPServer(confServer, bookService)
@@ -30,6 +26,5 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	registrar := server.NewRegistrar()
 	app := newApp(logger, httpServer, grpcServer, registrar)
 	return app, func() {
-		cleanup()
 	}, nil
 }

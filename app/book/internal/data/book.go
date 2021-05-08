@@ -15,7 +15,7 @@ import (
 func NewBookRepo(data *Data, logger log.Logger) biz.BookRepo {
 	return &bookRepo{
 		data: data,
-		log:  log.NewHelper("data/bookRepo", logger),
+		log:  log.NewHelper("data/bookRepoM", logger),
 	}
 }
 

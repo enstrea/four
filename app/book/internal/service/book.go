@@ -27,6 +27,7 @@ func (s *BookService) CreateBook(ctx context.Context, req *v1.CreateBookRequest)
 		Name:   req.Name,
 		Author: req.Author,
 	})
+	s.log.Infof("book: %+v", book)
 	if err != nil {
 		return nil, err
 	}
